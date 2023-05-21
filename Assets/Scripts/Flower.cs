@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Flower : MonoBehaviour
 {
+    [SerializeField] private int id;
+    [SerializeField] private string flowerName;
+    [SerializeField] private float production;
+    [SerializeField] private float durability;
+
     private void OnMouseEnter() 
     {
         Debug.Log("툴팁 켜기");
