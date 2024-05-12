@@ -10,16 +10,11 @@ public class Player : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        if(Input.GetButton("Horizontal"))
-        {
-            Vector3 vec = new Vector3(
-                Input.GetAxisRaw("Horizontal") * Time.deltaTime,
-                Input.GetAxisRaw("Vertical") * Time.deltaTime
-            );
+        float h = Input.GetAxisRaw("Horizontal");
 
-            transform.Translate(vec);
-        }
+        rigid.AddForce(Vector2.right * h, ForceMode2D.Impulse);
     }
 }
+ 
