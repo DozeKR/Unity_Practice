@@ -4,7 +4,12 @@ public class Player : MonoBehaviour
 {
 
     [SerializeField] private Rigidbody2D rigid;
+    [SerializeField] private CapsuleCollider2D col;
+    [SerializeField] private SpriteRenderer sprite;
     [SerializeField] private float maxSpeed;
+    [SerializeField] private float jumpPower;
+
+    private bool isJump = false;
 
     void Awake()
     {
@@ -13,9 +18,23 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        // Jump
+        if(Input.GetButtonDown("Jump") && isJump == false)
+        {
+            isJump = true;
+            rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+        }
+
+        // Stop Speed
         if(Input.GetButtonUp("Horizontal"))
         {
             rigid.velocity = new Vector2(rigid.velocity.normalized.x * 0.5f, rigid.velocity.y);
+        }
+
+        // Direction Sprite
+        if(Input.GetButtonDown("Horizontal"))
+        {
+            sprite.flipX = Input.GetAxisRaw("Horizontal") == -1;
         }
     }
 
@@ -35,6 +54,20 @@ public class Player : MonoBehaviour
         {
             rigid.velocity = new Vector2(-maxSpeed, rigid.velocity.y);
         }
+
+        if(rigid.velocity.y < 0)
+        {
+            var rayHit = Physics2D.Raycast(rigid.position, Vector3.down, 1, LayerMask.GetMask("Platform"));
+
+            if(rayHit.collider != null)
+            {
+                if(rayHit.distance < 0.5f)
+                {
+                    isJump = false;
+                }
+            }
+        }
+
     }
 }
  
