@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -68,6 +69,14 @@ public class Player : MonoBehaviour
             }
         }
 
+    }
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Enemy")
+        {  
+            Debug.Log("PlayerHit");
+        }
     }
 }
  
