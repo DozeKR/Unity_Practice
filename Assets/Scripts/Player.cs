@@ -76,7 +76,27 @@ public class Player : MonoBehaviour
         if(collision.gameObject.tag == "Enemy")
         {  
             Debug.Log("PlayerHit");
+            OnDamage(collision.transform.position);
         }
+    }
+
+    private void OnDamage(Vector2 targetPos)
+    {
+        gameObject.layer = 9;
+
+        sprite.color = new Color(1, 1, 1, 0.4f);
+
+        var dirc = transform.position.x - targetPos.x > 0 ? 1:-1;
+        rigid.AddForce(new Vector2(dirc, 1) * 7, ForceMode2D.Impulse);
+
+        Invoke("OffDamaged", 3);
+    }
+
+    private void OffDamaged()
+    {
+        gameObject.layer = 6;
+
+        sprite.color = new Color(1, 1, 1, 1);
     }
 }
  
