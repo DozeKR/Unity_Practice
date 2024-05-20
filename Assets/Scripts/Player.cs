@@ -15,6 +15,8 @@ public class Player : MonoBehaviour
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
+        sprite = GetComponent<SpriteRenderer>();
+        col = GetComponent<CapsuleCollider2D>();
     }
 
     void Update()
@@ -75,12 +77,25 @@ public class Player : MonoBehaviour
     {
         if(collision.gameObject.tag == "Enemy")
         {  
-            Debug.Log("PlayerHit");
-            OnDamage(collision.transform.position);
+            // Attack
+            if(rigid.velocity.y < 0 && transform.position.y > collision.transform.position.y)
+            {
+                OnAttack(collision.transform);
+            }
+            else
+            {
+                OnDamaged(collision.transform.position);
+            }
         }
     }
 
-    private void OnDamage(Vector2 targetPos)
+    private void OnAttack(Transform enemy)
+    {
+        var target = enemy.GetComponent<Enemy>();
+        target.OnDamaged();
+    }
+
+    private void OnDamaged(Vector2 targetPos)
     {
         gameObject.layer = 9;
 
