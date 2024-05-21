@@ -8,6 +8,10 @@ public class Enemy : MonoBehaviour
     [SerializeField] private SpriteRenderer sprite;
     [SerializeField] private CapsuleCollider2D col;
     [SerializeField] private int nextMove;
+    [SerializeField] private int damage;
+    [SerializeField] private bool isMove;
+    
+    public int Damage => damage;
 
     void Awake()
     {
@@ -20,6 +24,8 @@ public class Enemy : MonoBehaviour
 
     void FixedUpdate()
     {
+        if(!isMove) return;
+
         rigid.velocity = new Vector3(nextMove, rigid.velocity.y);
 
         var frontVec = new Vector2(rigid.position.x + nextMove, rigid.position.y);
@@ -43,6 +49,8 @@ public class Enemy : MonoBehaviour
 
     public void OnDamaged()
     {
+        if(!isMove) return;
+
         sprite.color = new Color(1, 1, 1, 0.4f);
 
         sprite.flipY = true;

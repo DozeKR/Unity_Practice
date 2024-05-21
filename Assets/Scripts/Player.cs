@@ -4,6 +4,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 
+    [SerializeField] private GameManager gameManger;
     [SerializeField] private Rigidbody2D rigid;
     [SerializeField] private CapsuleCollider2D col;
     [SerializeField] private SpriteRenderer sprite;
@@ -84,7 +85,7 @@ public class Player : MonoBehaviour
             }
             else
             {
-                OnDamaged(collision.transform.position);
+                OnDamaged(collision.transform);
             }
         }
     }
@@ -95,8 +96,14 @@ public class Player : MonoBehaviour
         target.OnDamaged();
     }
 
-    private void OnDamaged(Vector2 targetPos)
+    private void OnDamaged(Transform enemy)
     {
+        var target = enemy.GetComponent<Enemy>();
+
+        gameManger.HealthDown(target.Damage);
+
+        var targetPos = enemy.transform.position;
+
         gameObject.layer = 9;
 
         sprite.color = new Color(1, 1, 1, 0.4f);
